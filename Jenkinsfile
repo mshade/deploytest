@@ -1,18 +1,9 @@
-pipeline {
-    options {
-      dockerNode(credentialsId: 'swarm-ucp-bundle', dockerHost: 'tcp://docker.foolhq.com:443', image: '', remoteFs: '')
-    }
-    agent {
-      docker {
-        image 'node:7-alpine'
+node {
+  checkout scm
+
+  docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
+    docker.image('node:7-alpine') {
+      sh node --version
       }
-    }
-      
-    stages {
-        stage('Test') {
-            steps {
-                sh 'node --version'
-            }
-        }
-    }
+  }
 }
