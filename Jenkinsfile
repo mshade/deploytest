@@ -1,6 +1,6 @@
 pipeline {
     agent {
-      docker.withserver('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle) { 
+      docker.withserver('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') { 
         image 'node:7-alpine'
       }
     }
