@@ -4,7 +4,7 @@ services:
   dev:
     image: ${IMAGE}:${BUILD_ID}
     deploy:
-      replicas: 2
+      replicas: 1
       labels:
         com.docker.lb.hosts: ${LIVE_HOSTNAME}
         com.docker.lb.port: 80
