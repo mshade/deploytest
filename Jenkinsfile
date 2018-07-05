@@ -8,6 +8,7 @@ pipeline {
   }
 
   stages {
+    def app
     stage('Clone repo') {
       steps {
         script {
@@ -20,7 +21,7 @@ pipeline {
       steps {
         script {
           docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
-            def app = docker.build("${IMAGE}:${env.BUILD_ID}")
+            app = docker.build("${IMAGE}:${env.BUILD_ID}")
           }
         }
       }
