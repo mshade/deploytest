@@ -43,7 +43,7 @@ pipeline {
       steps {
         script {
           docker.withServer("${UCP_URI}", 'swarm-ucp-bundle') {
-            sh "docker stack deploy -c docker-compose-dev.yml apptest-dev"
+            sh "docker stack deploy -c docker-compose-dev.yml apptest-${GIT_BRANCH}"
           }
         }
       }
