@@ -7,32 +7,37 @@ pipeline {
 
   stages {
 
-    def app
-
     stage('Clone repo') {
-      checkout scm
+      steps {
+        checkout scm
+      }
     }
 
     stage('Build image') {
-      docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
-        app = docker.build("${IMAGE}:${env.BUILD_ID}")
+      steps {
+        docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
+          def app = docker.build("${IMAGE}:${env.BUILD_ID}")
+        }
       }
     }
 
     stage('Push image') {
-      docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
-        docker.withRegistry('https://dtr.foolhq.com', 'dtr-builder') {
-          app.push("${env.BUILD_ID}")
-          app.push("latest")
+      steps {
+        docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
+          docker.withRegistry('https://dtr.foolhq.com', 'dtr-builder') {
+            app.push("${env.BUILD_ID}")
+            app.push("latest")
+          }
         }
       }
     }
 
     stage('Deploy stack') {
-      docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
-        sh "docker stack deploy -c docker-compose.yml apptest-dev"
+      steps {
+        docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
+          sh "docker stack deploy -c docker-compose.yml apptest-dev"
+        }
       }
-      
     }
   }
 }
