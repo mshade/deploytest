@@ -1,29 +1,37 @@
-node {
-  def app
+pipeline {
 
-  stage('Clone repo') {
-    checkout scm
+  environment {
+    IMAGE = 'builder/apptest'
+    LIVE_HOSTNAME = 'testapp-dev.docker.foolhq.com'
   }
 
-  stage('Build image') {
-    docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
-      app = docker.build("builder/apptest:${env.BUILD_ID}")
+  stages {
+
+    def app
+
+    stage('Clone repo') {
+      checkout scm
     }
-  }
 
-  stage('Push image') {
-    docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
-      docker.withRegistry('https://dtr.foolhq.com', 'dtr-builder') {
-        app.push("${env.BUILD_ID}")
-        app.push("latest")
-        sh "env"
+    stage('Build image') {
+      docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
+        app = docker.build("${IMAGE}:${env.BUILD_ID}")
       }
     }
-  }
 
-//  stage('Deploy stack') {
-//    docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
-//      
-//    }
-    
+    stage('Push image') {
+      docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
+        docker.withRegistry('https://dtr.foolhq.com', 'dtr-builder') {
+          app.push("${env.BUILD_ID}")
+          app.push("latest")
+        }
+      }
+    }
+
+    stage('Deploy stack') {
+      docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
+        sh "docker stack deploy -c docker-compose.yml apptest-dev"
+      }
+      
+  }
 }
