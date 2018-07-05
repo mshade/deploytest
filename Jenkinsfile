@@ -12,9 +12,11 @@ node {
   }
 
   stage('Push image') {
-    docker.withRegistry('https://dtr.foolhq.com', 'dtr-builder') {
-      app.push("${env.BUILD_ID}")
-      app.push("latest")
+    docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
+      docker.withRegistry('https://dtr.foolhq.com', 'dtr-builder') {
+        app.push("${env.BUILD_ID}")
+        app.push("latest")
+      }
     }
   }
 }
