@@ -5,7 +5,7 @@ pipeline {
   agent any
 
   environment {
-    IMAGE = 'builder/apptest'
+    IMAGE = 'dtr.foolhq.com/builder/apptest'
     LIVE_HOSTNAME = 'testapp-dev.docker.foolhq.com'
   }
 
