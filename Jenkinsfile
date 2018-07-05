@@ -10,4 +10,11 @@ node {
       app = docker.build("builder/apptest:${env.BUILD_ID}")
     }
   }
+
+  stage('Push image') {
+    docker.withRegistry('https://dtr.foolhq.com', 'dtr-builder') {
+      app.push("${env.BUILD_ID}")
+      app.push("latest")
+    }
+  }
 }
