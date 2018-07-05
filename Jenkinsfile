@@ -5,8 +5,9 @@ pipeline {
   agent any
 
   environment {
-    IMAGE = "${DTR_URI}/builder/apptest"
-    LIVE_HOSTNAME = "testapp-${GIT_BRANCH}.docker.foolhq.com"
+    APP_NAME = "deploytest"
+    APP_HOSTNAME = "${APP_NAME}-${GIT_BRANCH}.docker.foolhq.com"
+    IMAGE = "${DTR_URI}/builder/${APP_NAME}"
   }
 
   stages {
@@ -43,7 +44,7 @@ pipeline {
       steps {
         script {
           docker.withServer("${UCP_URI}", 'swarm-ucp-bundle') {
-            sh "docker stack deploy -c docker-compose-dev.yml apptest-${GIT_BRANCH}"
+            sh "docker stack deploy -c docker-compose-dev.yml ${APP_NAME}-${GIT_BRANCH}"
           }
         }
       }

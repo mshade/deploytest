@@ -6,13 +6,13 @@ services:
     deploy:
       replicas: 1
       labels:
-        com.docker.lb.hosts: ${LIVE_HOSTNAME}
+        com.docker.lb.hosts: ${APP_HOSTNAME}
         com.docker.lb.port: 80
-        com.docker.lb.network: testapp-network
+        com.docker.lb.network: appnet
         service-status: standby
     networks:
       - testapp-network
 
 networks:
-  testapp-network:
+  appnet:
     driver: overlay
