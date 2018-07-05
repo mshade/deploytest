@@ -1,9 +1,14 @@
 node {
-  checkout scm
+  def app
 
-  docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
-    docker.image('node:7-alpine') {
-      sh node --version
-      }
+  stage('Clone repo') {
+    checkout scm
   }
+
+  stage('Build image') {
+    docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
+      app = docker.build(builder/apptest)
+    }
+  }
+
 }
