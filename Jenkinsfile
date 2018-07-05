@@ -6,7 +6,7 @@ pipeline {
 
   environment {
     IMAGE = "${DTR_URI}/builder/apptest"
-    LIVE_HOSTNAME = 'testapp-dev.docker.foolhq.com'
+    LIVE_HOSTNAME = testapp-${GIT_BRANCH}.docker.foolhq.com"
   }
 
   stages {
@@ -30,7 +30,7 @@ pipeline {
       steps {
         script {
           docker.withServer("${UCP_URI}", 'swarm-ucp-bundle') {
-            docker.withRegistry('https://dtr.foolhq.com', 'dtr-builder') {
+            docker.withRegistry("https://${DTR_URI}", 'dtr-builder') {
               app.push("${env.BUILD_ID}")
               app.push("latest")
             }
