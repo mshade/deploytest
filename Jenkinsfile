@@ -7,6 +7,8 @@ pipeline {
   environment {
     APP_NAME = "deploytest"
     APP_HOSTNAME = "${APP_NAME}-${GIT_BRANCH}.docker.foolhq.com"
+    UCP_CREDS = "swarm-ucp-bundle"
+    DTR_CREDS = "dtr-builder"
     IMAGE = "${DTR_URI}/builder/${APP_NAME}"
   }
 
@@ -20,7 +22,7 @@ pipeline {
     stage('Build image') {
       steps {
         script {
-          docker.withServer("${UCP_URI}", 'swarm-ucp-bundle') {
+          docker.withServer("${UCP_URI}", "${UCP_CREDS}") {
             app = docker.build("${IMAGE}:${env.BUILD_ID}")
           }
         }
@@ -30,12 +32,12 @@ pipeline {
     stage('Push image') {
       steps {
         script {
-          docker.withServer("${UCP_URI}", 'swarm-ucp-bundle') {
-            docker.withRegistry("https://${DTR_URI}", 'dtr-builder') {
+          docker.withServer("${UCP_URI}", "${UCP_CREDS}") {
+            docker.withRegistry("https://${DTR_URI}", "${DTR_CREDS}") {
               app.push("${env.BUILD_ID}")
               app.push("latest")
             }
-        }
+          }
         }
       }
     }
@@ -43,7 +45,7 @@ pipeline {
     stage('Deploy stack') {
       steps {
         script {
-          docker.withServer("${UCP_URI}", 'swarm-ucp-bundle') {
+          docker.withServer("${UCP_URI}", "${UCP_CREDS}") {
             sh "docker stack deploy -c docker-compose-dev.yml ${APP_NAME}-${GIT_BRANCH}"
           }
         }
