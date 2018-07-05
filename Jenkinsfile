@@ -33,5 +33,6 @@ pipeline {
         sh "docker stack deploy -c docker-compose.yml apptest-dev"
       }
       
+    }
   }
 }
