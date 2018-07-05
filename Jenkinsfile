@@ -6,7 +6,7 @@ pipeline {
 
   environment {
     IMAGE = "${DTR_URI}/builder/apptest"
-    LIVE_HOSTNAME = testapp-${GIT_BRANCH}.docker.foolhq.com"
+    LIVE_HOSTNAME = "testapp-${GIT_BRANCH}.docker.foolhq.com"
   }
 
   stages {
