@@ -16,7 +16,14 @@ node {
       docker.withRegistry('https://dtr.foolhq.com', 'dtr-builder') {
         app.push("${env.BUILD_ID}")
         app.push("latest")
+        sh "env"
       }
     }
   }
+
+//  stage('Deploy stack') {
+//    docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
+//      
+//    }
+    
 }
