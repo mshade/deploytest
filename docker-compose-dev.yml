@@ -11,7 +11,7 @@ services:
         com.docker.lb.network: appnet
         service-status: standby
     networks:
-      - testapp-network
+      - appnet
 
 networks:
   appnet:
