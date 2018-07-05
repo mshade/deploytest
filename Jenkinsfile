@@ -1,3 +1,5 @@
+def app
+
 pipeline {
   
   agent any
@@ -8,7 +10,6 @@ pipeline {
   }
 
   stages {
-    def app
     stage('Clone repo') {
       steps {
         script {
