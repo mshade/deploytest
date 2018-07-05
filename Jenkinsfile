@@ -45,7 +45,7 @@ pipeline {
       steps {
         script {
           docker.withServer('tcp://docker.foolhq.com:443', 'swarm-ucp-bundle') {
-            sh "docker stack deploy -c docker-compose.yml apptest-dev"
+            sh "docker stack deploy -c docker-compose-dev.yml apptest-dev"
           }
         }
       }
