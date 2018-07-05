@@ -12,9 +12,7 @@ pipeline {
   stages {
     stage('Clone repo') {
       steps {
-        script {
-          checkout scm
-        }
+        checkout scm
       }
     }
 
