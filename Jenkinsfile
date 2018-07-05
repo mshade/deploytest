@@ -1,4 +1,6 @@
 pipeline {
+  
+  agent any
 
   environment {
     IMAGE = 'builder/apptest'
