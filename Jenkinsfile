@@ -1,7 +1,4 @@
-#!groovy
-
 def app
-
 pipeline {
   
   agent any
@@ -56,8 +53,8 @@ pipeline {
     }
 
     stage('Deploy to Prod') {
+      when { tag "release-*" }
       steps {
-        when { tag "release-*" }
         script {
           docker.withServer("${UCP_URI}", "${UCP_CREDS}") {
             sh "docker stack deploy -c docker-compose-prod.yml ${APP_NAME}-release"
