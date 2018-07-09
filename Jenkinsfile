@@ -8,7 +8,7 @@ pipeline {
 
   environment {
     APP_NAME = "deploytest"
-    APP_HOSTNAME = "${APP_NAME}-${BRANCH}.docker.foolhq.com"
+    APP_HOSTNAME = "${APP_NAME}-${BRANCH_NAME}.docker.foolhq.com"
     PROD_HOSTNAME = "${APP_NAME}.docker.foolhq.com"
     UCP_CREDS = "swarm-ucp-bundle"
     DTR_CREDS = "dtr-builder"
@@ -49,7 +49,7 @@ pipeline {
       steps {
         script {
           docker.withServer("${UCP_URI}", "${UCP_CREDS}") {
-            sh "docker stack deploy -c docker-compose-dev.yml ${APP_NAME}-${BRANCH}"
+            sh "docker stack deploy -c docker-compose-dev.yml ${APP_NAME}-${BRANCH_NAME}"
           }
         }
       }
