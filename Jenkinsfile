@@ -8,7 +8,7 @@ pipeline {
 
   environment {
     APP_NAME = "deploytest"
-    APP_HOSTNAME = "${APP_NAME}-${BRANCH_NAME}.docker.foolhq.com"
+    APP_HOSTNAME = "${APP_NAME}-${BRANCH}.docker.foolhq.com"
     PROD_HOSTNAME = "${APP_NAME}.docker.foolhq.com"
     UCP_CREDS = "swarm-ucp-bundle"
     DTR_CREDS = "dtr-builder"
